@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-sm-6 col-sm-offset-3"><h1>{{title}} is working!!!</h1>
+<form method = 'GET' action = ''>
+<input type= 'text' name = "q" placeholder= "Search Posts" value="{{ request.GET.q }}"/>
+<input type= 'submit' value='Search'/>
+</form>
+
+{% for object in object_list %}
+<div class="row">
+			<div class="col-sm-12">
+   				<div class="thumbnail">
+   					{% if object.image %}
+      				<img src="{{ object.image.url }}" class="image-responsive">
+      				{% endif %}
+     				<div class="caption">
+      		  			<h3><a href="{{object.get_absolute_url}}">{{ object.title }}</a>  <small>{{ object.publish }}</small></h3>
+       					<p>{{ object.content|linebreaks|truncatechars:150  }}</p>
+       					<p><a href="{{object.get_absolute_url}}" class="btn btn-primary" role="button">View </a> 
+       				</div>
+   				</div>
+ 			 </div>
+</div>
+{% endfor %}
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if object_list.has_previous %}
+            <a href="?page={{ object_list.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+        </span>
+
+        {% if object_list.has_next %}
+            <a href="?page={{ object_list.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+
+</div>
+
+
+{% endblock content %}
